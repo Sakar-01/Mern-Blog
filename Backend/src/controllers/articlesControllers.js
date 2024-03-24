@@ -1,12 +1,15 @@
 import Articles from "../models/articles-model.js";
+import Users from "../models/users-model.js";
 
 export const createArticles = async (req, res) => {
   try {
     const { title, description, category, body } = req.body;
-    const newArticle = new Articles({ title, description, category, body });
+    const user = await Users.findById(res.locals.jwtData.id);
+    const newArticle = new Articles({ title, description, category, body,userId: user._id,createdBy: user.name });
     const savedArticle = await newArticle.save();
     res.status(201).json(savedArticle);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: error.message });
   }
 };
@@ -54,5 +57,27 @@ export const deleteArticle = async (req, res) => {
     res.status(200).json({ message: "Article deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+export const searchArticle = async (req, res) => {
+  try {
+    const keyword = req.params.keyword;
+
+    if (!keyword) {
+      return res.status(400).json({ message: 'Keyword parameter is required' });
+    }
+    const articles = await Articles.find({
+      $or: [
+        { title: { $regex: keyword, $options: 'i' } },
+        { description: { $regex: keyword, $options: 'i' } },
+        { body: { $regex: keyword, $options: 'i' } },
+        { category: { $regex: keyword, $options: 'i' } },
+      ],
+    });
+
+
+    res.json(articles);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

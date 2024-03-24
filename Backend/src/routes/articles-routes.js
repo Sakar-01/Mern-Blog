@@ -5,26 +5,27 @@ import {
     getSingleArticles,
     updateArticle,
     deleteArticle,
-    // searchArticle
+    searchArticle
   } from "../controllers/articlesControllers.js";
-const articlesRoutes = express.Router();
+  import { verifyToken } from "../utils/token-manager.js";
+  const articlesRoutes = express.Router();
 
 // Create a new article
-articlesRoutes.post("/articles", createArticles);
+articlesRoutes.post("/articles",verifyToken, createArticles);
 
 // Get all articles
 articlesRoutes.get("/articles", getArticles);
 
 // Get article by ID
-articlesRoutes.get("/articles/:id", getSingleArticles);
+articlesRoutes.get("/articles/:id",verifyToken, getSingleArticles);
 
 // Update article by ID
-articlesRoutes.put("/articles/:id", updateArticle);
+articlesRoutes.put("/articles/:id",verifyToken, updateArticle);
 
 // Delete article by ID
-articlesRoutes.delete("/articles/:id", deleteArticle);
+articlesRoutes.delete("/articles/:id",verifyToken, deleteArticle);
 
 // Search articles and sort by date
-// articlesRoutes.get("/articles/search", searchArticle);
+articlesRoutes.get("/articles/search/:keyword",verifyToken, searchArticle);
 
 export default articlesRoutes;

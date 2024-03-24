@@ -12,6 +12,7 @@ export const getArticles = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ARTICLES_REQUEST });
     const { data } = await axios.get('/api/v1/articles/articles');
+    console.log(data)
     dispatch({ type: GET_ARTICLES_SUCCESS, payload: data });
   } catch (error) {
     console.log(error)
@@ -44,5 +45,21 @@ export const addArticle = (articleData) => async (dispatch) => {
       dispatch({ type: GET_ARTICLES_SUCCESS, payload: data });
     } catch (error) {
       // dispatch({ type: GET_ARTICLE_FAILURE, payload: error.message });
+    }
+  };
+
+  export const searchArticles = (keyword) => async (dispatch) => {
+    try {
+      dispatch({ type: GET_ARTICLES_REQUEST });
+      console.log(keyword)
+      if(keyword!==''){
+        const { data } = await axios.get(`/api/v1/articles/articles/search/${keyword}`);
+    
+        dispatch({ type: GET_ARTICLES_SUCCESS, payload: data });
+      }else{
+        dispatch(getArticles());
+      }
+    } catch (error) {
+      // dispatch({ type: SEARCH_ARTICLES_FAILURE, payload: error.message });
     }
   };
