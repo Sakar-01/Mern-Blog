@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addArticle } from '../../redux/articles/articlesAction';
+import { TextField, Button, Container, Paper, Typography } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Link } from "react-router-dom";
 
 const CreateNewArticle = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
+
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [articleData, setArticleData] = useState({
     title: '',
     description: '',
@@ -21,45 +28,85 @@ const CreateNewArticle = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addArticle(articleData));
-    navigate('/')
+    navigate('/');
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="title">Title:</label>
-      <input
-        type="text"
-        id="title"
-        name="title"
-        value={articleData.title}
-        onChange={handleChange}
-      />
-      <label htmlFor="description">Description:</label>
-      <input
-        type="text"
-        id="description"
-        name="description"
-        value={articleData.description}
-        onChange={handleChange}
-      />
-      <label htmlFor="category">Category:</label>
-      <input
-        type="text"
-        id="category"
-        name="category"
-        value={articleData.category}
-        onChange={handleChange}
-      />
-      <label htmlFor="body">Body:</label>
-      <textarea
-        id="body"
-        name="body"
-        value={articleData.body}
-        onChange={handleChange}
-      ></textarea>
-      <button type="submit">Create Article</button>
-      <button to={'/'}>cancle</button>
-    </form>
+    <Container style={{
+      height: '90vh',
+      marginTop:'20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Paper style={{
+          width: isSmallScreen ? '90%' : 400,
+          padding: 20,
+        }} elevation={3}>
+        <Typography variant="h5" gutterBottom>
+          Create New Article
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Title"
+            type="text"
+            name="title"
+            value={articleData.title}
+            onChange={handleChange}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
+          />
+          <TextField
+            label="Description"
+            type="text"
+            name="description"
+            value={articleData.description}
+            onChange={handleChange}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
+          />
+          <TextField
+            label="Category"
+            type="text"
+            name="category"
+            value={articleData.category}
+            onChange={handleChange}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
+          />
+          <TextField
+            label="Body"
+            name="body"
+            value={articleData.body}
+            onChange={handleChange}
+            multiline
+            rows={4}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+          >
+            Create Article
+          </Button>
+          <Button component={Link} to={'/'} fullWidth>
+            Cancel
+          </Button>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 

@@ -5,7 +5,8 @@ import {
     ADD_ARTICLE_SUCCESS, 
     EDIT_ARTICLE_REQUEST,
     EDIT_ARTICLE_SUCCESS,
-    GET_ARTICLE_SUCCESS 
+    GET_ARTICLE_SUCCESS,
+    DELETE_ARTICLE_SUCCESS
   } from './types.js';
   
   const initialState = {
@@ -29,7 +30,14 @@ import {
         case EDIT_ARTICLE_SUCCESS:
           return { ...state, loading: false, editedArticle: action.payload };  
         case GET_ARTICLE_SUCCESS:
-          return { ...state, loading: false, singleArticle: action.payload };  
+          return { ...state, loading: false, singleArticle: action.payload }; 
+        case DELETE_ARTICLE_SUCCESS:
+          return {
+            ...state,
+            loading: false,
+            articles: state.articles.filter((article) => article._id !== action.payload),
+            error: null,
+          }; 
       default:
         return state;
     }

@@ -6,7 +6,8 @@ import {
   ADD_ARTICLE_SUCCESS,
   EDIT_ARTICLE_REQUEST,
   EDIT_ARTICLE_SUCCESS,
-  GET_ARTICLE_SUCCESS
+  GET_ARTICLE_SUCCESS,
+  DELETE_ARTICLE_SUCCESS
 } from './types.js';
 
 export const getArticles = () => async (dispatch) => {
@@ -64,3 +65,17 @@ export const addArticle = (articleData) => async (dispatch) => {
       // dispatch({ type: SEARCH_ARTICLES_FAILURE, payload: error.message });
     }
   };
+
+  export const deleteArticle = (id) => async (dispatch) => {
+    try {
+  
+      await axios.delete(`/api/v1/articles/articles/${id}`);
+  
+      dispatch({ type: DELETE_ARTICLE_SUCCESS, payload: id });
+    } catch (error) {
+      dispatch({
+        type: DELETE_ARTICLE_FAILURE,
+        payload: error.response.data.message || 'Something went wrong',
+      });
+    }
+  };  

@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { getArticleById, editArticle } from '../../redux/articles/articlesAction';
+import { TextField, Button, Container, Paper, Typography } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const EditArticle = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
+  const theme = useTheme();
+
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [articleData, setArticleData] = useState({
     title: '',
     description: '',
     category: '',
     body: '',
   });
+
   const { singleArticle, loading } = useSelector((state) => state.articles);
+
   useEffect(() => {
     dispatch(getArticleById(id));
   }, [dispatch, id]);
@@ -37,51 +45,85 @@ const EditArticle = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(editArticle(id, articleData));
-    navigate('/')
+    navigate('/');
   };
 
   return (
-    <div>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
+    <Container style={{
+      height: '90vh',
+      marginTop:'20px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <Paper style={{
+          width: isSmallScreen ? '90%' : 400,
+          padding: 20,
+        }} elevation={3}>
+        <Typography variant="h5" gutterBottom>
+          Edit Article
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="title">Title:</label>
-          <input
+          <TextField
+            label="Title"
             type="text"
-            id="title"
             name="title"
             value={articleData.title}
             onChange={handleChange}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
           />
-          <label htmlFor="description">Description:</label>
-          <input
+          <TextField
+            label="Description"
             type="text"
-            id="description"
             name="description"
             value={articleData.description}
             onChange={handleChange}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
           />
-          <label htmlFor="category">Category:</label>
-          <input
+          <TextField
+            label="Category"
             type="text"
-            id="category"
             name="category"
             value={articleData.category}
             onChange={handleChange}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
           />
-          <label htmlFor="body">Body:</label>
-          <textarea
-            id="body"
+          <TextField
+            label="Body"
             name="body"
             value={articleData.body}
             onChange={handleChange}
-          ></textarea>
-          <button type="submit">Save Changes</button>
-          <button to={'/'}>cancle</button>
+            multiline
+            rows={4}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+          >
+            Save Changes
+          </Button>
+          <Button component={Link} to={'/'} fullWidth>
+            Cancel
+          </Button>
         </form>
-      )}
-    </div>
+      </Paper>
+    </Container>
   );
 };
 
