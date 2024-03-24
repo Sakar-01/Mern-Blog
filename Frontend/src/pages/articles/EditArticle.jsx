@@ -18,6 +18,7 @@ const EditArticle = () => {
     description: '',
     category: '',
     body: '',
+    userId: '',
   });
 
   const { singleArticle, loading } = useSelector((state) => state.articles);
@@ -33,6 +34,7 @@ const EditArticle = () => {
         description: singleArticle.description,
         category: singleArticle.category,
         body: singleArticle.body,
+        userId: singleArticle.userId,
       });
     }
   }, [singleArticle]);

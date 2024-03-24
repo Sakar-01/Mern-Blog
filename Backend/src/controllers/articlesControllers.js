@@ -34,26 +34,47 @@ export const getSingleArticles = async (req, res) => {
 };
 export const updateArticle = async (req, res) => {
   try {
-    const { title, description, category, body } = req.body;
+    const user = await Users.findById(res.locals.jwtData.id);
+
+    const { title, description, category, body, userId } = req.body;
+    console.log(userId)
+    if (user._id.toString() !== userId.toString()) {
+      return res.status(401).json({ error: "Access Unauthorized" });
+    }
+
     const updatedArticle = await Articles.findByIdAndUpdate(
       req.params.id,
       { title, description, category, body },
       { new: true }
     );
+
     if (!updatedArticle) {
       return res.status(404).json({ error: "Article not found" });
     }
+
     res.status(200).json(updatedArticle);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 export const deleteArticle = async (req, res) => {
   try {
-    const deletedArticle = await Articles.findByIdAndDelete(req.params.id);
-    if (!deletedArticle) {
+    const article = await Articles.findById(req.params.id);
+    if (!article) {
       return res.status(404).json({ error: "Article not found" });
     }
+
+    const user = await Users.findById(res.locals.jwtData.id);
+    if (user._id.toString() !== article.userId.toString()) {
+      return res.status(401).json({ error: "Access Unauthorized" });
+    }
+
+    const deletedArticle = await Articles.findByIdAndDelete(req.params.id);
+    if (!deletedArticle) {
+      return res.status(404).json({ error: "Failed to delete article" });
+    }
+
     res.status(200).json({ message: "Article deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
