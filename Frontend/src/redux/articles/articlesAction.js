@@ -6,6 +6,7 @@ import {
   ADD_ARTICLE_SUCCESS,
   EDIT_ARTICLE_REQUEST,
   EDIT_ARTICLE_SUCCESS,
+  GET_ARTICLE_SUCCESS
 } from './types.js';
 
 export const getArticles = () => async (dispatch) => {
@@ -42,7 +43,7 @@ export const addArticle = (articleData) => async (dispatch) => {
   
       const { data } = await axios.get(`/api/v1/articles/articles/${id}`); 
   
-      dispatch({ type: GET_ARTICLES_SUCCESS, payload: data });
+      dispatch({ type: GET_ARTICLE_SUCCESS, payload: data });
     } catch (error) {
       // dispatch({ type: GET_ARTICLE_FAILURE, payload: error.message });
     }

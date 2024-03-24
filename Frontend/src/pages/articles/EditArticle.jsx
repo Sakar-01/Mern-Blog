@@ -13,21 +13,21 @@ const EditArticle = () => {
     category: '',
     body: '',
   });
-  const { articles, loading } = useSelector((state) => state.articles);
+  const { singleArticle, loading } = useSelector((state) => state.articles);
   useEffect(() => {
     dispatch(getArticleById(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (articles) {
+    if (singleArticle) {
       setArticleData({
-        title: articles.title,
-        description: articles.description,
-        category: articles.category,
-        body: articles.body,
+        title: singleArticle.title,
+        description: singleArticle.description,
+        category: singleArticle.category,
+        body: singleArticle.body,
       });
     }
-  }, [articles]);
+  }, [singleArticle]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,6 +78,7 @@ const EditArticle = () => {
             onChange={handleChange}
           ></textarea>
           <button type="submit">Save Changes</button>
+          <button to={'/'}>cancle</button>
         </form>
       )}
     </div>

@@ -58,6 +58,7 @@ const CreateNewArticle = () => {
         onChange={handleChange}
       ></textarea>
       <button type="submit">Create Article</button>
+      <button to={'/'}>cancle</button>
     </form>
   );
 };

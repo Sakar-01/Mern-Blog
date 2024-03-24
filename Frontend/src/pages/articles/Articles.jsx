@@ -1,13 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { getArticles } from '../../redux/articles/articlesAction';
-import { searchArticles } from '../../redux/articles/articlesAction';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+  getArticles,
+  searchArticles,
+} from "../../redux/articles/articlesAction";
+import {
+  Button,
+  Grid,
+  TextField,
+  Card,
+  CardContent,
+  Typography,
+  IconButton,
+} from "@mui/material";
+import {
+  AddCircleOutline,
+  Search,
+  Sort,
+  Edit,
+  Delete,
+} from "@mui/icons-material";
 
 const Articles = () => {
   const dispatch = useDispatch();
-  const { loading, articles, error } = useSelector((state) => state.articles);
-  const [searchTerm, setSearchTerm] = useState(''); 
+  const { loading, articles } = useSelector((state) => state.articles);
+  const [searchTerm, setSearchTerm] = useState("");
   const [sortByDateAsc, setSortByDateAsc] = useState(true);
 
   useEffect(() => {
@@ -17,8 +35,9 @@ const Articles = () => {
   const handleSearch = () => {
     dispatch(searchArticles(searchTerm));
   };
+
   const handleSortToggle = () => {
-    setSortByDateAsc((prevState) => !prevState); // Toggle sort order
+    setSortByDateAsc((prevState) => !prevState);
   };
 
   const sortedArticles = [...articles].sort((a, b) => {
@@ -30,43 +49,99 @@ const Articles = () => {
   });
 
   return (
-    <div>
-    <div>
-        <button onClick={handleSortToggle}>
-          {sortByDateAsc ? 'Sort by Date Asc' : 'Sort by Date Desc'}
-        </button>
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Search articles"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
-      </div>
+    <Grid container style={{ justifyContent: "center" }}>
+      <Button
+        component={Link}
+        to="/new-article"
+        variant="contained"
+        color="primary"
+        endIcon={<AddCircleOutline />}
+        style={{ margin: "20px 0" }}
+      >
+        Create New Article
+      </Button>
+
+      <Grid
+        container
+        spacing={3}
+        alignItems="center"
+        justifyContent="center"
+        style={{ margin: "20px 0" }}
+      >
+        <Grid item xs={6} sm={6} md={6}>
+          <TextField
+            type="text"
+            placeholder="Search articles"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={3} sm={3} md={3}>
+          <IconButton variant="outlined" onClick={handleSearch}>
+            <Search />
+          </IconButton>
+        </Grid>
+        <Grid item xs={3} sm={3} md={3}>
+          <Button
+            variant="outlined"
+            onClick={handleSortToggle}
+            fullWidth
+            endIcon={<Sort />}
+          >
+            {sortByDateAsc ? "Sort by Date Asc" : "Sort by Date Desc"}
+          </Button>
+        </Grid>
+      </Grid>
+
       {loading ? (
         <p>Loading...</p>
-      ) : error ? (
-        <p>Error: {error}</p>
       ) : (
-        <div>
-          <h1>All Articles</h1>
-          <ul>
-            {sortedArticles.map((article) => (
-              <li key={article._id}>
-                <h3>{article.title}</h3>
-                <p>{article.description}</p>
-                <p>{article.body}</p>
-                <p>Category: {article.category}</p>
-                <Link to={`/edit/${article._id}`}>Edit</Link>
-              </li>
-            ))}
-          </ul>
-          <Link to="/new-article">Create New Article</Link>
-        </div>
+        <Grid container spacing={3}>
+          {sortedArticles.map((article) => (
+            <Grid key={article._id} item xs={12} sm={6} md={4}>
+              <Card
+                variant="outlined"
+                sx={{
+                  boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.1)",
+                  marginBottom: "20px",
+                }}
+              >
+                <CardContent>
+                  <Typography variant="h6" component="div">
+                    {article.title}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {article.description}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {article.body}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Category: {article.category}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Date: {new Date(article.createdAt).toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    Created By: {article.createdBy}
+                  </Typography>
+                  <Button
+                    component={Link}
+                    to={`/edit/${article._id}`}
+                    variant="outlined"
+                    color="primary"
+                    style={{ marginTop: "10px" }}
+                  >
+                    Edit
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       )}
-    </div>
+    </Grid>
   );
 };
 

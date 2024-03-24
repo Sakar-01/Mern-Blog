@@ -10,6 +10,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'; 
 import { connect } from 'react-redux';
 import { logout } from '../redux/auth/authActions';
+
 const Navigation=(props)=> {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   return (
@@ -21,8 +22,6 @@ const Navigation=(props)=> {
           </Typography>
           {
             isAuthenticated ? <>
-
-            <Button component={RouterLink} color="inherit" to="/new-article">Create New</Button>
             <Button color="inherit" onClick={()=>{props.logout()}}>Logout</Button>
             </>:
             <><Button component={RouterLink} color="inherit" to="/register">Register</Button>
