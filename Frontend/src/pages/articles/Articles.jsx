@@ -126,7 +126,9 @@ const Articles = () => {
                     {article.description}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    {article.body}
+                    {article.body.length > 50
+                      ? `${article.body.slice(0, 50)}...`
+                      : article.body}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
                     Category: {article.category}
