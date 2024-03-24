@@ -6,28 +6,32 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-
-export default function ButtonAppBar() {
+import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux'; 
+import { connect } from 'react-redux';
+import { logout } from '../redux/auth/authActions';
+const Navigation=(props)=> {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Mern Blog
+            <Button component={RouterLink} color="inherit" to="/">Mern Blog</Button>
           </Typography>
-          <Button color="inherit">Register</Button>
-          <Button color="inherit">Login</Button>
+          {
+            isAuthenticated ? <>
+
+            <Button component={RouterLink} color="inherit" to="/new-article">Create New</Button>
+            <Button color="inherit" onClick={()=>{props.logout()}}>Logout</Button>
+            </>:
+            <><Button component={RouterLink} color="inherit" to="/register">Register</Button>
+            <Button component={RouterLink} color="inherit" to="/login">Login</Button></>
+          }
         </Toolbar>
       </AppBar>
     </Box>
   );
 }
+
+export default connect(null, { logout })(Navigation);

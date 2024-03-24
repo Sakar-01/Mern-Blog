@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import HomeScreen from "./pages/HomeScreen";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+import Articles from "./pages/articles/Articles";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import PrivateRoute from "./utils/PrivateRoute";
 import Navigation from "./components/Navigation";
 import { Provider } from 'react-redux';
 import store from './redux/store'; 
+import CreateNewArticle from './pages/articles/CreateNewArticle';
+import EditArticle from './pages/articles/EditArticle';
 
 const theme = createTheme({
   palette: {
@@ -36,7 +38,9 @@ function App() {
         <Routes>
           {/* @Private Routes */}
           <Route path="/" element={<PrivateRoute />}>
-              <Route exact path="/" element={<HomeScreen />} />
+              <Route exact path="/" element={<Articles />} />
+              <Route path="/new-article" element={<CreateNewArticle />} />
+              <Route path="/edit/:id" element={<EditArticle/>} />
           </Route>
           {/* @Public Routes */}
           <Route path="/register" element={<Signup />} />

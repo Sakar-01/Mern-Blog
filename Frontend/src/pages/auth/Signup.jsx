@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { checkAuthentication, login } from "../redux/auth/authActions";
+import { checkAuthentication, signup } from "../../redux/auth/authActions";
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { Paper, TextField, Button, Typography, Container } from "@mui/material";
 
-const Login = ({ login, loading, error }) => {
+const Signup = ({ signup, loading, error }) => {
   const navigateTo = useNavigate();
   const theme = useTheme();
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -28,7 +29,7 @@ const Login = ({ login, loading, error }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(formData, navigateTo);
+    signup(formData, navigateTo);
   };
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -45,7 +46,6 @@ const Login = ({ login, loading, error }) => {
       navigateTo("/");
     }
   }, [isAuthenticated]);
-
   return (
     <Container
       style={{
@@ -63,21 +63,32 @@ const Login = ({ login, loading, error }) => {
           padding: 20,
         }}
       >
+        {" "}
         <Typography variant="h5" gutterBottom>
-          Login
+          Sign Up
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
-            value={formData.email}
+            label="Name"
+            type="text"
+            name="name"
+            value={formData.name}
             onChange={handleChange}
-            label="Email"
-            type="email"
-            name="email"
             variant="outlined"
             margin="normal"
             fullWidth
             required
-            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            label="Email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            required
           />
           <TextField
             label="Password"
@@ -89,7 +100,6 @@ const Login = ({ login, loading, error }) => {
             margin="normal"
             fullWidth
             required
-            InputLabelProps={{ shrink: true }}
           />
           <Button
             type="submit"
@@ -97,12 +107,11 @@ const Login = ({ login, loading, error }) => {
             color="primary"
             fullWidth
             disabled={loading}
-            style={{ marginTop: 10 }}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Signing up..." : "Sign Up"}
           </Button>
           {error && (
-            <Typography style={{ color: 'red', marginTop: 10 }}>
+            <Typography style={{ color: "red", marginTop: 10 }}>
               {error.message}
             </Typography>
           )}
@@ -110,7 +119,6 @@ const Login = ({ login, loading, error }) => {
       </Paper>
     </Container>
   );
-
 };
 
 const mapStateToProps = (state) => ({
@@ -120,7 +128,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  login,
+  signup,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
