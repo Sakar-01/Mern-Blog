@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { getArticleById, editArticle } from '../../redux/articles/articlesAction';
-import { TextField, Button, Container, Paper, Typography } from '@mui/material';
+import { TextField, Button, Container, Paper, Typography,FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
@@ -87,17 +87,22 @@ const EditArticle = () => {
             fullWidth
             required
           />
-          <TextField
-            label="Category"
-            type="text"
-            name="category"
-            value={articleData.category}
-            onChange={handleChange}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            required
-          />
+          <FormControl fullWidth variant="outlined" margin="normal" required>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select
+              labelId="category-label"
+              id="category"
+              name="category"
+              value={articleData.category}
+              onChange={handleChange}
+              label="Category"
+            >
+              <MenuItem value="">None</MenuItem>
+              <MenuItem value="Food">Food</MenuItem>
+              <MenuItem value="Education">Education</MenuItem>
+              <MenuItem value="Businessmen">Businessmen</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             label="Body"
             name="body"

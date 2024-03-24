@@ -24,11 +24,12 @@ import {
 } from "@mui/icons-material";
 
 const Articles = () => {
+  const loggedInUser = useSelector((state) => state.auth.user);
+
   const dispatch = useDispatch();
   const { loading, articles } = useSelector((state) => state.articles);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortByDateAsc, setSortByDateAsc] = useState(true);
-
+  const [sortByDateAsc, setSortByDateAsc] = useState(false);
   useEffect(() => {
     dispatch(getArticles());
   }, [dispatch]);
@@ -113,7 +114,10 @@ const Articles = () => {
                 }}
               >
                 <CardContent>
-                  <Link to={`/articles/${article._id}`} style={{textDecoration: 'none'}}>
+                  <Link
+                    to={`/article/${article._id}`}
+                    style={{ textDecoration: "none" }}
+                  >
                     <Typography variant="h6" component="div">
                       {article.title}
                     </Typography>
@@ -133,23 +137,27 @@ const Articles = () => {
                   <Typography variant="body2" color="textSecondary">
                     Created By: {article.createdBy}
                   </Typography>
-                  <Button
-                    component={Link}
-                    to={`/edit/${article._id}`}
-                    variant="outlined"
-                    color="primary"
-                    style={{ marginTop: "10px" }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(article._id)}
-                    variant="outlined"
-                    color="primary"
-                    style={{ marginTop: "10px" }}
-                  >
-                    Delete
-                  </Button>
+                  {loggedInUser.id == article.userId && (
+                    <>
+                      <Button
+                        component={Link}
+                        to={`/edit/${article._id}`}
+                        variant="outlined"
+                        color="primary"
+                        style={{ marginTop: "10px" }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() => handleDelete(article._id)}
+                        variant="outlined"
+                        color="primary"
+                        style={{ marginTop: "10px" }}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                  )}
                 </CardContent>
               </Card>
             </Grid>

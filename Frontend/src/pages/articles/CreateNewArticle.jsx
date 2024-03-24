@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addArticle } from '../../redux/articles/articlesAction';
-import { TextField, Button, Container, Paper, Typography } from '@mui/material';
+import { TextField, Button, Container, Paper, Typography,FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { Link } from "react-router-dom";
-
 const CreateNewArticle = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const categories = ['Food', 'Education', 'Businessmen'];
+
   const [articleData, setArticleData] = useState({
     title: '',
     description: '',
@@ -70,17 +71,23 @@ const CreateNewArticle = () => {
             fullWidth
             required
           />
-          <TextField
-            label="Category"
-            type="text"
-            name="category"
-            value={articleData.category}
-            onChange={handleChange}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            required
-          />
+          <FormControl fullWidth variant="outlined" margin="normal" required>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select
+              labelId="category-label"
+              id="category"
+              name="category"
+              value={articleData.category}
+              onChange={handleChange}
+              label="Category"
+            >
+              {categories.map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             label="Body"
             name="body"
