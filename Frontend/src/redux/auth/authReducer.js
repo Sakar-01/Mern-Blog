@@ -25,12 +25,6 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         error: null,
       };
-      case SIGNUP_REQUEST:
-        return {
-          ...state,
-          loading: true,
-          error: null,
-        };
       case SIGNUP_SUCCESS:
         return {
           ...state,
@@ -53,7 +47,6 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         error: null,
       };
-    // Handle other authentication-related actions if needed
     default:
       return state;
   }

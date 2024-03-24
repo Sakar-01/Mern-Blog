@@ -1,4 +1,3 @@
-  
 import axios from 'axios';
 import { 
   SET_AUTHENTICATION,
@@ -9,7 +8,8 @@ import {
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS
  } from './types';
-
+ import { toast } from 'react-toastify';
+ import 'react-toastify/dist/ReactToastify.css';
 const setAuthentication = (isAuthenticated, user) => ({
   type: SET_AUTHENTICATION,
   payload: { isAuthenticated, user },
@@ -60,26 +60,36 @@ export const signup = (userData,navigateTo) => async (dispatch) => {
 
   try {
     const response = await axios.post('/api/v1/user/signup', userData);
-
-    dispatch(signupSuccess(response.data.user));
-    
-    navigateTo('/')
+    // console.log(response)
+    if(response.status=='200'){
+      dispatch(signupSuccess(response.data.user));
+      navigateTo('/')
+    }
   } catch (error) {
+    if(error.response.status=='422'){
+      return error.response.data.errors.map(err=>{
+        toast.error(err.msg)
+      })
+    }
+    toast.error(error.response.data || 'Login failed')
     dispatch(signupFailure(error.response.data));
   }
 };
 export const login = (userData,navigateTo) => async (dispatch) => {
-
   dispatch(loginRequest());
-
   try {
-    
     const response = await axios.post('/api/v1/user/login', userData);
-    console.log(response.data)
+    if(response.status=='200'){
     dispatch(loginSuccess(response.data.user));
     navigateTo('/')
+    }
   } catch (error) {
-    // dispatch(signupFailure(error.response.data));
+    if(error.response.status=='422'){
+      return error.response.data.errors.map(err=>{
+        toast.error(err.msg)
+      })
+    }
+    toast.error(error.response.data || 'Login failed')
   }
 };
 

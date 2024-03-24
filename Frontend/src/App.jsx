@@ -11,6 +11,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store'; 
 import CreateNewArticle from './pages/articles/CreateNewArticle';
 import EditArticle from './pages/articles/EditArticle';
+import SingleArticle from './pages/articles/SingleArticle';
 
 const theme = createTheme({
   palette: {
@@ -41,6 +42,7 @@ function App() {
               <Route exact path="/" element={<Articles />} />
               <Route path="/new-article" element={<CreateNewArticle />} />
               <Route path="/edit/:id" element={<EditArticle/>} />
+              <Route path="/article/:id" element={<SingleArticle/>} />
           </Route>
           {/* @Public Routes */}
           <Route path="/register" element={<Signup />} />

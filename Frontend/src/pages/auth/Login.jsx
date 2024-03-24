@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 
 import { Paper, TextField, Button, Typography, Container } from "@mui/material";
 
-const Login = ({ login, loading, error }) => {
+const Login = ({ login, error }) => {
   const navigateTo = useNavigate();
   const theme = useTheme();
 
@@ -96,10 +96,9 @@ const Login = ({ login, loading, error }) => {
             variant="contained"
             color="primary"
             fullWidth
-            disabled={loading}
             style={{ marginTop: 10 }}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            Login
           </Button>
           {error && (
             <Typography style={{ color: 'red', marginTop: 10 }}>

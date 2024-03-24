@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 
 import { Paper, TextField, Button, Typography, Container } from "@mui/material";
 
-const Signup = ({ signup, loading, error }) => {
+const Signup = ({ signup, error }) => {
   const navigateTo = useNavigate();
   const theme = useTheme();
 
@@ -106,9 +106,8 @@ const Signup = ({ signup, loading, error }) => {
             variant="contained"
             color="primary"
             fullWidth
-            disabled={loading}
           >
-            {loading ? "Signing up..." : "Sign Up"}
+          Sign Up
           </Button>
           {error && (
             <Typography style={{ color: "red", marginTop: 10 }}>

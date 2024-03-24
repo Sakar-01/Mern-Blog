@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {
   getArticles,
   searchArticles,
-  deleteArticle
+  deleteArticle,
 } from "../../redux/articles/articlesAction";
 import {
   Button,
@@ -49,12 +49,12 @@ const Articles = () => {
     }
   });
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this article?')) {
+    if (window.confirm("Are you sure you want to delete this article?")) {
       dispatch(deleteArticle(id));
     }
   };
   return (
-    <Grid container style={{ justifyContent: "center",padding:'0 20px' }}>
+    <Grid container style={{ justifyContent: "center", padding: "0 20px" }}>
       <Button
         component={Link}
         to="/new-article"
@@ -113,9 +113,11 @@ const Articles = () => {
                 }}
               >
                 <CardContent>
-                  <Typography variant="h6" component="div">
-                    {article.title}
-                  </Typography>
+                  <Link to={`/articles/${article._id}`} style={{textDecoration: 'none'}}>
+                    <Typography variant="h6" component="div">
+                      {article.title}
+                    </Typography>
+                  </Link>
                   <Typography variant="body2" color="textSecondary">
                     {article.description}
                   </Typography>
@@ -141,7 +143,7 @@ const Articles = () => {
                     Edit
                   </Button>
                   <Button
-                    onClick={()=>handleDelete(article._id)}
+                    onClick={() => handleDelete(article._id)}
                     variant="outlined"
                     color="primary"
                     style={{ marginTop: "10px" }}
