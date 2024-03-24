@@ -137,8 +137,8 @@ const Articles = () => {
                   <Typography variant="body2" color="textSecondary">
                     Created By: {article.createdBy}
                   </Typography>
-                  {/* {loggedInUser.id == article.userId && (
-                    <> */}
+                  {loggedInUser.id == article.userId && (
+                    <>
                       <Button
                         component={Link}
                         to={`/edit/${article._id}`}
@@ -156,8 +156,8 @@ const Articles = () => {
                       >
                         Delete
                       </Button>
-                    {/* </>
-                  )} */}
+                    </>
+                  )}
                 </CardContent>
               </Card>
             </Grid>

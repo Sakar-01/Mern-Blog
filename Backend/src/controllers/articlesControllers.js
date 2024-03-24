@@ -37,7 +37,6 @@ export const updateArticle = async (req, res) => {
     const user = await Users.findById(res.locals.jwtData.id);
 
     const { title, description, category, body, userId } = req.body;
-    console.log(userId)
     if (user._id.toString() !== userId.toString()) {
       return res.status(401).json({ error: "Access Unauthorized" });
     }
