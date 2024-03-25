@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon index.js",
+    "start": "node index.js",
     "client": "cd ./frontend && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
